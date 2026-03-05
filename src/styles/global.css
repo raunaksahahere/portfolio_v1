@@ -1,0 +1,1230 @@
+/* ═══════════════════════════════════════════
+   GLOBAL — Egyptian Time Travel Portfolio
+   "Code is the New Civilization"
+═══════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ════════════════ DESIGN TOKENS ════════════════ */
+:root {
+  /* Background */
+  --bg-deep:    #0a0604;
+  --bg-primary: #120904;
+  --bg-section: #0e0702;
+  --bg-card:    rgba(18, 10, 4, 0.92);
+
+  /* Sand palette */
+  --sand-0: #fdf6e3;
+  --sand-1: #f5e9c4;
+  --sand-2: #e8d49a;
+  --sand-3: #d4b870;
+  --sand-4: #b89040;
+
+  /* Gold */
+  --gold:      #c8952a;
+  --gold-l:    #e0a830;
+  --gold-ll:   #f5cf60;
+  --gold-glow: rgba(200, 149, 42, 0.4);
+
+  /* Ember / Warm */
+  --ember:     #ff8c32;
+  --ember-dim: rgba(255, 140, 50, 0.15);
+
+  /* Stone */
+  --stone-0: #7a6850;
+  --stone-1: #a08860;
+  --stone-2: #c0a878;
+  --stone-3: #d8c090;
+
+  /* Text */
+  --text-primary:   #f0e0c0;
+  --text-secondary: #a08860;
+  --text-dim:       rgba(200, 160, 80, 0.5);
+
+  /* Accent */
+  --portal-cyan:  #40e0ff;
+  --portal-green: #60ff90;
+
+  /* Transitions */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Sky gradient (day) */
+  --sky-top: #1a0a04;
+  --sky-mid: #2a1208;
+  --sky-bottom: #3a1a0c;
+}
+
+/* Night mode */
+[data-theme="night"] {
+  --bg-deep:     #02010a;
+  --bg-primary:  #04020e;
+  --bg-section:  #030108;
+  --bg-card:     rgba(4, 2, 14, 0.95);
+  --sky-top:     #000010;
+  --sky-mid:     #0a0020;
+  --sky-bottom:  #100830;
+  --text-primary: #d0c8f0;
+  --ember:       #8080ff;
+  --ember-dim:   rgba(100, 100, 255, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) var(--bg-deep);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ════════════════ UTILITY ════════════════ */
+.section {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  overflow: hidden;
+}
+
+.section-inner {
+  max-width: 1100px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.section-title {
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(28px, 5vw, 48px);
+  color: var(--gold-l);
+  text-align: center;
+  margin-bottom: 8px;
+  text-shadow: 0 0 40px var(--gold-glow);
+}
+
+.section-subtitle {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(13px, 2vw, 16px);
+  color: var(--text-dim);
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 50px;
+}
+
+.hieroglyph-divider {
+  text-align: center;
+  font-size: 20px;
+  color: var(--gold);
+  opacity: 0.4;
+  letter-spacing: 14px;
+  margin: 30px 0;
+}
+
+/* ════════════════ SCROLL INTRO ════════════════ */
+.scroll-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 1.2s ease, visibility 1.2s ease;
+}
+
+.scroll-intro.fading {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.scroll-image-wrap {
+  position: relative;
+  width: min(520px, 85vw);
+  animation: scrollFloat 4s ease-in-out infinite;
+}
+
+.scroll-image-wrap img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 60px rgba(200, 149, 42, 0.3));
+}
+
+.scroll-text-overlay {
+  position: absolute;
+  top: 28%;
+  left: 12%;
+  right: 12%;
+  bottom: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.scroll-narrative {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(11px, 2.5vw, 15px);
+  color: #3a2810;
+  line-height: 1.7;
+  opacity: 0;
+  animation: textReveal 1.5s ease 1.5s forwards;
+}
+
+.scroll-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: clamp(16px, 4vw, 28px);
+  color: #2a1408;
+  opacity: 0;
+  animation: textReveal 1s ease 2.5s forwards;
+}
+
+.scroll-tagline {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(10px, 2vw, 13px);
+  color: #6a4828;
+  opacity: 0;
+  animation: textReveal 1s ease 3s forwards;
+}
+
+/* Stone seal button */
+.seal-button {
+  margin-top: 40px;
+  position: relative;
+  opacity: 0;
+  animation: textReveal 0.8s ease 3.5s forwards;
+}
+
+.seal-button button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 44px;
+  background: linear-gradient(180deg, #b08830 0%, #8a6418 30%, #c09830 55%, #a07420 80%, #7a5818 100%);
+  border: 2px solid rgba(200, 149, 42, 0.3);
+  border-radius: 4px;
+  color: #1c0e04;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.seal-button button:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 12px 40px rgba(200, 149, 42, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  border-color: var(--gold-l);
+}
+
+.seal-button .seal-glyph {
+  font-family: serif;
+  font-size: 22px;
+  color: rgba(240, 200, 80, 0.8);
+}
+
+/* ════════════════ SAND PARTICLES (Canvas) ════════════════ */
+.sand-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+/* ════════════════ NAVBAR ════════════════ */
+.egyptian-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 12px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(10, 6, 4, 0.95) 0%, rgba(10, 6, 4, 0) 100%);
+  backdrop-filter: blur(10px);
+  transition: transform 0.5s var(--ease-smooth);
+}
+
+.egyptian-nav.hidden {
+  transform: translateY(-100%);
+}
+
+.nav-logo {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo .logo-glyph {
+  font-size: 22px;
+  animation: glyphPulse 3s ease-in-out infinite;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+}
+
+.nav-links a {
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--gold-l);
+  background: rgba(200, 149, 42, 0.1);
+}
+
+/* ════════════════ OASIS / ABOUT ════════════════ */
+.oasis-section {
+  background: linear-gradient(180deg, var(--bg-deep) 0%, #1a0e06 50%, var(--bg-deep) 100%);
+}
+
+.oasis-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 149, 42, 0.15);
+  border-radius: 16px;
+  padding: 48px;
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.oasis-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(200, 149, 42, 0.2), transparent 50%, rgba(200, 149, 42, 0.1));
+  z-index: -1;
+}
+
+.oasis-card h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  color: var(--gold-l);
+  margin-bottom: 6px;
+}
+
+.oasis-card .title-role {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.oasis-card .bio {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-primary);
+  opacity: 0.85;
+}
+
+.avail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(80, 200, 100, 0.1);
+  border: 1px solid rgba(80, 200, 100, 0.25);
+  font-size: 12px;
+  color: #60dd70;
+}
+
+.avail-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #5cc96a;
+  animation: pulse-avail 2s ease infinite;
+}
+
+@keyframes pulse-avail {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(80, 200, 100, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(80, 200, 100, 0); }
+}
+
+/* ════════════════ HIEROGLYPH SKILLS ════════════════ */
+.skills-section {
+  background: linear-gradient(180deg, var(--bg-deep) 0%, #140a04 50%, var(--bg-deep) 100%);
+}
+
+.hieroglyph-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.glyph-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 149, 42, 0.12);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.4s var(--ease-smooth);
+  overflow: hidden;
+}
+
+.glyph-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: radial-gradient(circle at 50% 50%, rgba(200, 149, 42, 0) 0%, transparent 70%);
+  transition: background 0.5s ease;
+}
+
+.glyph-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  box-shadow: 0 15px 40px rgba(200, 149, 42, 0.15), 0 0 60px rgba(200, 149, 42, 0.08);
+}
+
+.glyph-card:hover::before {
+  background: radial-gradient(circle at 50% 50%, rgba(200, 149, 42, 0.12) 0%, transparent 70%);
+}
+
+.glyph-symbol {
+  font-size: 48px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 0 0 transparent);
+  transition: filter 0.5s ease, transform 0.4s var(--ease-bounce);
+}
+
+.glyph-card:hover .glyph-symbol {
+  filter: drop-shadow(0 0 20px rgba(240, 200, 80, 0.6));
+  transform: scale(1.15);
+}
+
+.glyph-name {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.glyph-card:hover .glyph-name {
+  color: var(--gold-l);
+}
+
+/* Translation panel */
+.translation-panel {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  background: rgba(10, 6, 4, 0.96);
+  border: 1px solid rgba(200, 149, 42, 0.3);
+  border-radius: 16px;
+  padding: 24px 36px;
+  min-width: 320px;
+  max-width: 500px;
+  z-index: 500;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(200, 149, 42, 0.1);
+  transition: transform 0.5s var(--ease-bounce), opacity 0.4s ease;
+  opacity: 0;
+}
+
+.translation-panel.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.translation-panel .tp-glyph {
+  font-size: 36px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 15px rgba(240, 200, 80, 0.5));
+}
+
+.translation-panel .tp-arrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0 12px;
+}
+
+.translation-panel .tp-name {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold-l);
+}
+
+.translation-panel .tp-desc {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.translation-panel .tp-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.translation-panel .tp-tech {
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(200, 149, 42, 0.12);
+  border: 1px solid rgba(200, 149, 42, 0.2);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+/* ════════════════ PROJECT RUINS ════════════════ */
+.ruins-section {
+  background: linear-gradient(180deg, var(--bg-deep) 0%, #180c04 50%, var(--bg-deep) 100%);
+}
+
+.ruins-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ruin-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 149, 42, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.5s var(--ease-smooth);
+}
+
+.ruin-card:hover {
+  border-color: rgba(200, 149, 42, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px);
+}
+
+.ruin-header {
+  position: relative;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(200, 149, 42, 0.06) 0%, transparent 100%);
+  overflow: hidden;
+}
+
+.ruin-structure {
+  font-size: 64px;
+  opacity: 0.7;
+  transition: all 0.5s ease;
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.ruin-card:hover .ruin-structure {
+  opacity: 1;
+  filter: drop-shadow(0 0 25px rgba(240, 200, 80, 0.5));
+  transform: scale(1.1);
+}
+
+/* Sealed door overlay */
+.ruin-sealed {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 6, 4, 0.85);
+  transition: opacity 0.6s ease;
+}
+
+.ruin-card.opened .ruin-sealed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ruin-sealed span {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* Torch indicators */
+.ruin-torches {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.torch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(200, 149, 42, 0.15);
+  border: 1px solid rgba(200, 149, 42, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.torch.lit {
+  background: var(--gold-l);
+  box-shadow: 0 0 12px rgba(240, 200, 80, 0.6);
+  border-color: var(--gold-l);
+}
+
+/* Project info (revealed after open) */
+.ruin-info {
+  padding: 24px;
+}
+
+.ruin-info .ruin-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ember);
+  margin-bottom: 6px;
+}
+
+.ruin-info h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold-l);
+  margin-bottom: 10px;
+}
+
+.ruin-info p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  opacity: 0.8;
+  margin-bottom: 14px;
+}
+
+.ruin-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.ruin-techs span {
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: rgba(200, 149, 42, 0.1);
+  border: 1px solid rgba(200, 149, 42, 0.15);
+  font-size: 11px;
+  color: var(--gold);
+}
+
+.ruin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.ruin-link:hover {
+  color: var(--gold-ll);
+}
+
+/* ════════════════ TEMPLE OF CREATION ════════════════ */
+.temple-section {
+  background: linear-gradient(180deg, var(--bg-deep) 0%, #1e0e04 50%, var(--bg-deep) 100%);
+}
+
+.temple-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.artifact-card {
+  text-align: center;
+  padding: 36px 20px;
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 149, 42, 0.1);
+  border-radius: 14px;
+  transition: all 0.4s var(--ease-smooth);
+  cursor: default;
+}
+
+.artifact-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--gold);
+  box-shadow: 0 20px 50px rgba(200, 149, 42, 0.12);
+}
+
+.artifact-icon {
+  font-size: 48px;
+  margin-bottom: 14px;
+  animation: floatArtifact 3s ease-in-out infinite;
+}
+
+.artifact-card:nth-child(2) .artifact-icon { animation-delay: 0.3s; }
+.artifact-card:nth-child(3) .artifact-icon { animation-delay: 0.6s; }
+.artifact-card:nth-child(4) .artifact-icon { animation-delay: 0.9s; }
+
+.artifact-label {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.artifact-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-l);
+  margin-bottom: 8px;
+}
+
+.artifact-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ════════════════ CONTACT PORTAL ════════════════ */
+.portal-section {
+  background: radial-gradient(ellipse at 50% 60%, #1a0a20 0%, var(--bg-deep) 70%);
+  min-height: 100vh;
+}
+
+.portal-ring {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  animation: portalSpin 8s linear infinite;
+  box-shadow:
+    0 0 40px rgba(200, 149, 42, 0.2),
+    inset 0 0 40px rgba(200, 149, 42, 0.1);
+}
+
+.portal-ring::after {
+  content: '';
+  position: absolute;
+  inset: 15px;
+  border-radius: 50%;
+  border: 1px solid rgba(64, 224, 255, 0.3);
+  animation: portalSpin 6s linear infinite reverse;
+  box-shadow:
+    0 0 30px rgba(64, 224, 255, 0.15),
+    inset 0 0 30px rgba(64, 224, 255, 0.08);
+}
+
+.portal-center {
+  position: relative;
+  z-index: 2;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(64, 224, 255, 0.08) 0%, transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: portalPulse 3s ease-in-out infinite;
+}
+
+.portal-center span {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px;
+  color: var(--portal-cyan);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(64, 224, 255, 0.4);
+}
+
+.contact-orbs {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.contact-orb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 28px;
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 149, 42, 0.12);
+  border-radius: 16px;
+  text-decoration: none;
+  transition: all 0.4s var(--ease-smooth);
+  min-width: 120px;
+}
+
+.contact-orb:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.contact-orb .orb-icon {
+  font-size: 28px;
+}
+
+.contact-orb .orb-label {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contact-orb:hover .orb-label {
+  color: var(--gold-l);
+}
+
+/* ════════════════ SCARAB GUIDE ════════════════ */
+.scarab-guide {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.scarab-bubble {
+  background: rgba(10, 6, 4, 0.95);
+  border: 1px solid rgba(200, 149, 42, 0.25);
+  border-radius: 14px 14px 4px 14px;
+  padding: 14px 18px;
+  max-width: 280px;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--sand-2);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transform-origin: bottom right;
+  transition: all 0.4s var(--ease-bounce);
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.scarab-bubble.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.scarab-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c8952a, #8a6018);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(200, 149, 42, 0.3);
+  animation: scarabFloat 3s ease-in-out infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scarab-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(200, 149, 42, 0.5);
+}
+
+/* ════════════════ SPHINX RIDDLE ════════════════ */
+.sphinx-trigger {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 32px;
+  opacity: 0.4;
+  transition: all 0.4s ease;
+  margin-top: 30px;
+}
+
+.sphinx-trigger:hover {
+  opacity: 1;
+  filter: drop-shadow(0 0 15px rgba(240, 200, 80, 0.5));
+  transform: scale(1.1);
+}
+
+.sphinx-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.4s ease;
+}
+
+.sphinx-content {
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 149, 42, 0.25);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 440px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.sphinx-content h3 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 22px;
+  color: var(--gold-l);
+  margin-bottom: 6px;
+}
+
+.sphinx-content .riddle {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--text-dim);
+  margin: 16px 0 24px;
+}
+
+.sphinx-input {
+  width: 100%;
+  padding: 14px 20px;
+  background: rgba(200, 149, 42, 0.08);
+  border: 1px solid rgba(200, 149, 42, 0.2);
+  border-radius: 10px;
+  color: var(--gold-l);
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 3px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.sphinx-input:focus {
+  border-color: var(--gold);
+}
+
+.sphinx-input.wrong {
+  animation: sphinxShake 0.5s ease;
+  border-color: #ff4444;
+}
+
+.sphinx-input.correct {
+  border-color: #60ff90;
+  box-shadow: 0 0 20px rgba(96, 255, 144, 0.2);
+}
+
+.sphinx-hint {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 16px;
+}
+
+.sphinx-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 149, 42, 0.2);
+  background: rgba(200, 149, 42, 0.08);
+  color: var(--text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sphinx-close:hover {
+  background: rgba(200, 149, 42, 0.2);
+  color: var(--gold-l);
+}
+
+/* Sphinx secret reveal */
+.sphinx-reveal {
+  animation: fadeIn 0.6s ease;
+  padding: 24px;
+  text-align: center;
+}
+
+.sphinx-reveal h3 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 20px;
+  color: var(--gold-l);
+  margin-bottom: 4px;
+}
+
+.sphinx-reveal p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  opacity: 0.8;
+}
+
+/* ════════════════ DAY/NIGHT TOGGLE ════════════════ */
+.dn-toggle {
+  width: 50px;
+  height: 26px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #e0a020 0%, #c88020 100%);
+  border: 1px solid rgba(200, 149, 42, 0.3);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.5s ease;
+  flex-shrink: 0;
+}
+
+[data-theme="night"] .dn-toggle {
+  background: linear-gradient(135deg, #2020a0 0%, #1010c0 100%);
+  border-color: rgba(80, 80, 255, 0.3);
+}
+
+.dn-toggle .dn-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.4s var(--ease-bounce);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+[data-theme="night"] .dn-toggle .dn-knob {
+  transform: translateX(24px);
+}
+
+/* ════════════════ SANDSTORM TRANSITION ════════════════ */
+.sandstorm {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, rgba(200, 149, 42, 0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.sandstorm.active {
+  opacity: 1;
+}
+
+/* ════════════════ KEYFRAMES ════════════════ */
+@keyframes scrollFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes textReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glyphPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; text-shadow: 0 0 15px var(--gold-glow); }
+}
+
+@keyframes floatArtifact {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes portalSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes portalPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.96); }
+}
+
+@keyframes scarabFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sphinxShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ════════════════ REVEAL ANIMATIONS ════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ════════════════ MOBILE ════════════════ */
+@media (max-width: 900px) {
+  .hieroglyph-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ruins-grid {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+  }
+  .temple-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .section { padding: 60px 16px; }
+
+  .nav-links { display: none; }
+
+  .oasis-card { padding: 28px 20px; }
+
+  .hieroglyph-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .glyph-card { padding: 20px 10px; }
+  .glyph-symbol { font-size: 36px; }
+
+  .temple-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .artifact-card { padding: 24px 12px; }
+
+  .contact-orbs { gap: 12px; }
+  .contact-orb { padding: 18px 20px; min-width: 100px; }
+
+  .translation-panel { min-width: auto; left: 10px; right: 10px; transform: translateX(0) translateY(120%); }
+  .translation-panel.visible { transform: translateX(0) translateY(0); }
+
+  .scarab-bubble { max-width: 220px; font-size: 12px; }
+
+  .portal-ring { width: 220px; height: 220px; }
+  .portal-center { width: 150px; height: 150px; }
+}
