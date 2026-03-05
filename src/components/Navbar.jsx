@@ -55,7 +55,8 @@ export default function Navbar({ visible, isDark, onToggleDark, activeSection })
       {/* Mobile scroll menu overlay */}
       {menuOpen && (
         <div className="mobile-menu-overlay" onClick={closeMenu}>
-          <div className="scroll-mobile-menu" onClick={e => e.stopPropagation()}>
+          {/* pointer-events handled in CSS to allow clicking "through" the transparent PNG edges */}
+          <div className="scroll-mobile-menu">
             {/* Scroll background */}
             <img src="/scroll.png" alt="" className="scroll-menu-bg" />
 
@@ -141,6 +142,7 @@ export default function Navbar({ visible, isDark, onToggleDark, activeSection })
         .scroll-mobile-menu {
           position: relative;
           width: min(500px, 95vw);
+          pointer-events: none; /* Clicks pass through transparent PNG parts */
           animation: scrollMenuOpen 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
@@ -167,6 +169,7 @@ export default function Navbar({ visible, isDark, onToggleDark, activeSection })
           align-items: center;
           justify-content: center;
           gap: 8px; /* Tighter packing */
+          pointer-events: auto; /* Re-enable clicks for the actual menu content */
         }
 
         .scroll-menu-item {

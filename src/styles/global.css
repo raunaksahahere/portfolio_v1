@@ -3,15 +3,21 @@
    "Code is the New Civilization"
 ═══════════════════════════════════════════ */
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 /* ════════════════ DESIGN TOKENS ════════════════ */
 :root {
   /* Background */
-  --bg-deep:    #0a0604;
+  --bg-deep: #0a0604;
   --bg-primary: #120904;
   --bg-section: #0e0702;
-  --bg-card:    rgba(18, 10, 4, 0.92);
+  --bg-card: rgba(18, 10, 4, 0.92);
 
   /* Sand palette */
   --sand-0: #fdf6e3;
@@ -21,13 +27,13 @@
   --sand-4: #b89040;
 
   /* Gold */
-  --gold:      #c8952a;
-  --gold-l:    #e0a830;
-  --gold-ll:   #f5cf60;
+  --gold: #c8952a;
+  --gold-l: #e0a830;
+  --gold-ll: #f5cf60;
   --gold-glow: rgba(200, 149, 42, 0.4);
 
   /* Ember / Warm */
-  --ember:     #ff8c32;
+  --ember: #ff8c32;
   --ember-dim: rgba(255, 140, 50, 0.15);
 
   /* Stone */
@@ -37,12 +43,12 @@
   --stone-3: #d8c090;
 
   /* Text */
-  --text-primary:   #f0e0c0;
+  --text-primary: #f0e0c0;
   --text-secondary: #a08860;
-  --text-dim:       rgba(200, 160, 80, 0.5);
+  --text-dim: rgba(200, 160, 80, 0.5);
 
   /* Accent */
-  --portal-cyan:  #40e0ff;
+  --portal-cyan: #40e0ff;
   --portal-green: #60ff90;
 
   /* Transitions */
@@ -57,22 +63,23 @@
 
 /* Night mode */
 [data-theme="night"] {
-  --bg-deep:     #02010a;
-  --bg-primary:  #04020e;
-  --bg-section:  #030108;
-  --bg-card:     rgba(4, 2, 14, 0.95);
-  --sky-top:     #000010;
-  --sky-mid:     #0a0020;
-  --sky-bottom:  #100830;
+  --bg-deep: #02010a;
+  --bg-primary: #04020e;
+  --bg-section: #030108;
+  --bg-card: rgba(4, 2, 14, 0.95);
+  --sky-top: #000010;
+  --sky-mid: #0a0020;
+  --sky-bottom: #100830;
   --text-primary: #d0c8f0;
-  --ember:       #8080ff;
-  --ember-dim:   rgba(100, 100, 255, 0.12);
+  --ember: #8080ff;
+  --ember-dim: rgba(100, 100, 255, 0.12);
 }
 
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--gold) var(--bg-deep);
+  overflow-x: hidden;
 }
 
 body {
@@ -80,13 +87,24 @@ body {
   background: var(--bg-deep);
   color: var(--text-primary);
   overflow-x: hidden;
+  position: relative;
+  overflow-x: hidden;
   min-height: 100vh;
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-deep); }
-::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 3px;
+}
 
 /* ════════════════ UTILITY ════════════════ */
 .section {
@@ -393,8 +411,15 @@ body {
 }
 
 @keyframes pulse-avail {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(80, 200, 100, 0.5); }
-  50% { box-shadow: 0 0 0 6px rgba(80, 200, 100, 0); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(80, 200, 100, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(80, 200, 100, 0);
+  }
 }
 
 /* ════════════════ HIEROGLYPH SKILLS ════════════════ */
@@ -742,9 +767,17 @@ body {
   animation: floatArtifact 3s ease-in-out infinite;
 }
 
-.artifact-card:nth-child(2) .artifact-icon { animation-delay: 0.3s; }
-.artifact-card:nth-child(3) .artifact-icon { animation-delay: 0.6s; }
-.artifact-card:nth-child(4) .artifact-icon { animation-delay: 0.9s; }
+.artifact-card:nth-child(2) .artifact-icon {
+  animation-delay: 0.3s;
+}
+
+.artifact-card:nth-child(3) .artifact-icon {
+  animation-delay: 0.6s;
+}
+
+.artifact-card:nth-child(4) .artifact-icon {
+  animation-delay: 0.9s;
+}
 
 .artifact-label {
   font-family: 'IM Fell English', serif;
@@ -1119,56 +1152,134 @@ body {
 
 /* ════════════════ KEYFRAMES ════════════════ */
 @keyframes scrollFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 @keyframes textReveal {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes glyphPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; text-shadow: 0 0 15px var(--gold-glow); }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+    text-shadow: 0 0 15px var(--gold-glow);
+  }
 }
 
 @keyframes floatArtifact {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes portalSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes portalPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(0.96); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(0.96);
+  }
 }
 
 @keyframes scarabFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes sphinxShake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-8px); }
-  40% { transform: translateX(8px); }
-  60% { transform: translateX(-6px); }
-  80% { transform: translateX(6px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-8px);
+  }
+
+  40% {
+    transform: translateX(8px);
+  }
+
+  60% {
+    transform: translateX(-6px);
+  }
+
+  80% {
+    transform: translateX(6px);
+  }
 }
 
 @keyframes revealUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ════════════════ REVEAL ANIMATIONS ════════════════ */
@@ -1188,43 +1299,84 @@ body {
   .hieroglyph-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .ruins-grid {
     grid-template-columns: 1fr;
     max-width: 440px;
   }
+
   .temple-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
-  .section { padding: 60px 16px; }
+  .section {
+    padding: 60px 16px;
+  }
 
-  .nav-links { display: none; }
+  .nav-links {
+    display: none;
+  }
 
-  .oasis-card { padding: 28px 20px; }
+  .oasis-card {
+    padding: 28px 20px;
+  }
 
   .hieroglyph-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
-  .glyph-card { padding: 20px 10px; }
-  .glyph-symbol { font-size: 36px; }
+
+  .glyph-card {
+    padding: 20px 10px;
+  }
+
+  .glyph-symbol {
+    font-size: 36px;
+  }
 
   .temple-grid {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
-  .artifact-card { padding: 24px 12px; }
 
-  .contact-orbs { gap: 12px; }
-  .contact-orb { padding: 18px 20px; min-width: 100px; }
+  .artifact-card {
+    padding: 24px 12px;
+  }
 
-  .translation-panel { min-width: auto; left: 10px; right: 10px; transform: translateX(0) translateY(120%); }
-  .translation-panel.visible { transform: translateX(0) translateY(0); }
+  .contact-orbs {
+    gap: 12px;
+  }
 
-  .scarab-bubble { max-width: 220px; font-size: 12px; }
+  .contact-orb {
+    padding: 18px 20px;
+    min-width: 100px;
+  }
 
-  .portal-ring { width: 220px; height: 220px; }
-  .portal-center { width: 150px; height: 150px; }
+  .translation-panel {
+    min-width: auto;
+    left: 10px;
+    right: 10px;
+    transform: translateX(0) translateY(120%);
+  }
+
+  .translation-panel.visible {
+    transform: translateX(0) translateY(0);
+  }
+
+  .scarab-bubble {
+    max-width: 220px;
+    font-size: 12px;
+  }
+
+  .portal-ring {
+    width: 220px;
+    height: 220px;
+  }
+
+  .portal-center {
+    width: 150px;
+    height: 150px;
+  }
 }
