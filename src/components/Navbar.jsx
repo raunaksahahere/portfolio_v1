@@ -140,7 +140,7 @@ export default function Navbar({ visible, isDark, onToggleDark, activeSection })
         /* Scroll menu */
         .scroll-mobile-menu {
           position: relative;
-          width: min(420px, 90vw);
+          width: min(500px, 95vw);
           animation: scrollMenuOpen 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
@@ -152,20 +152,21 @@ export default function Navbar({ visible, isDark, onToggleDark, activeSection })
         .scroll-menu-bg {
           width: 100%;
           height: auto;
+          transform: scaleY(1.35); /* Extreme stretch to guarantee vertical fit */
           filter: drop-shadow(0 0 40px rgba(200,149,42,0.3));
         }
 
         .scroll-menu-content {
           position: absolute;
-          top: 22%;
+          top: 10%; /* Maximally high */
           left: 12%;
           right: 15%;
-          bottom: 15%;
+          bottom: 8%; /* Maximally low */
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          gap: 8px; /* Tighter packing */
         }
 
         .scroll-menu-item {
